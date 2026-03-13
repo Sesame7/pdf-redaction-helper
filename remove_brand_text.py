@@ -53,7 +53,9 @@ def _iter_target_line_rects(
                 continue
 
             line_text = "".join(
-                _as_str(span.get("text", "")) for span in spans if isinstance(span, dict)
+                _as_str(span.get("text", ""))
+                for span in spans
+                if isinstance(span, dict)
             )
             if not line_pattern.search(line_text):
                 continue
@@ -171,7 +173,9 @@ def _load_config(config_file: Path) -> dict[str, Any] | None:
                 literal_keywords.append(keyword)
 
     if not literal_keywords and not regex_keywords:
-        print("[ERROR] both 'literal_keywords' and 'regex_keywords' are empty in [settings]")
+        print(
+            "[ERROR] both 'literal_keywords' and 'regex_keywords' are empty in [settings]"
+        )
         return None
 
     exclude_literal_keywords = _parse_multiline_list(exclude_literal_keywords_raw)
@@ -181,7 +185,9 @@ def _load_config(config_file: Path) -> dict[str, Any] | None:
         print("[ERROR] 'log_mode' must be 'minimal' or 'verbose' in [settings]")
         return None
     if pause_on_exit not in PAUSE_MODES:
-        print("[ERROR] 'pause_on_exit' must be 'never', 'error', or 'always' in [settings]")
+        print(
+            "[ERROR] 'pause_on_exit' must be 'never', 'error', or 'always' in [settings]"
+        )
         return None
     if not error_log_raw:
         print("[ERROR] 'error_log' is empty in [settings]")
@@ -210,7 +216,9 @@ def _validate_regex_rules(regex_rules: list[str], label: str) -> None:
             raise ValueError(f"invalid {label} regex #{idx}: {rule!r} ({exc})") from exc
 
 
-def _compile_pattern(literal_keywords: list[str], regex_keywords: list[str]) -> re.Pattern[str]:
+def _compile_pattern(
+    literal_keywords: list[str], regex_keywords: list[str]
+) -> re.Pattern[str]:
     parts: list[str] = []
     for keyword in literal_keywords:
         parts.append(_literal_keyword_pattern(keyword))
